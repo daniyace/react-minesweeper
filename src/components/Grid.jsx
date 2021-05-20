@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import "../styles/grid.css";
+import React, { useState } from 'react';
+import '../styles/grid.css';
 
 const Grid = () => {
+  let size = 15;
   let ban = true;
   let matrix = [];
-  for (var i = 0; i < 15; i++) {
+  for (var i = 0; i < size; i++) {
     matrix[i] = [];
-    for (var j = 0; j < 15; j++) {
+    for (var j = 0; j < size; j++) {
       matrix[i][j] = {
         val: Math.floor(Math.random() * 2),
         x: i,
@@ -25,11 +26,26 @@ const Grid = () => {
 
   const [state, setState] = useState(matrix);
 
-  const surround = (cell) => {
+  const surround = (cell, copy) => {
     let x = cell.x;
     let y = cell.y;
     let mines = 0;
-    let copy = [...state];
+    //let copy = [...state];
+
+    /*  for (let i = -1; i < 2; i++)
+      for (let j = -1; j < 2; j++)
+        //if (x + i >= 0 && x + j >= 0) {
+        console.log(i, j); */
+    //}
+    /*  for (let i = -1; i < 2; i++)
+      for (let j = -1; j < 2; j++) {
+        console.log(copy[x + i][y + j]);
+        if (copy[x + i][y + j].val === 1) mines++;
+      }
+
+    if (mines === 0)
+      for (let i = -1; i < 2; i++)
+        for (let j = -1; j < 2; j++) reveal(copy[x + i][y + j]); */
 
     if (x === 0 && y === 0) {
       for (let i = 0; i < 2; i++)
@@ -135,6 +151,8 @@ const Grid = () => {
     let mines = 0;
     let copy = [...state];
 
+    /*  for (let i = 0; i < 2; i++)
+      for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++; */
     if (x === 0 && y === 0) {
       for (let i = 0; i < 2; i++)
         for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
@@ -200,25 +218,24 @@ const Grid = () => {
   };
 
   const endGame = () => {
-    let copy = [...state];
-    for (var i = 0; i < copy.length; i++) {
-      for (var j = 0; j < copy[0].length; j++) {
-        if (copy[i][j].val === 0) ban = false;
+    for (var i = 0; i < state.length; i++) {
+      for (var j = 0; j < state[0].length; j++) {
+        if (state[i][j].val === 0) ban = false;
       }
     }
     if (ban) {
-      alert("Ya ganaste we");
-      window.location.reload(true);
+      alert('Ya ganaste we');
+      window.location.reload();
     }
   };
 
   const handleRigthClick = (cell) => {
     if (!cell.marca) {
       if (cell.val === 1) {
-        alert("Ya perdiste chavo");
-        window.location.reload(true);
+        alert('Ya perdiste chavo');
+        window.location.reload();
       } else {
-        if (cell.val !== 2) surround(cell);
+        if (cell.val !== 2) surround(cell, [...state]);
       }
     } else {
       console.log(cell.val);
@@ -239,7 +256,7 @@ const Grid = () => {
   };
 
   return (
-    <div className="grid">
+    <div className='grid'>
       {state.map((row, i) => (
         <div key={i}>
           {row.map((col, j) => (
@@ -247,19 +264,19 @@ const Grid = () => {
               key={j}
               className={
                 col.marca && col.val === 1
-                  ? "d-inline-flex cell flag"
+                  ? 'd-inline-flex cell flag'
                   : col.marca && col.val === 0
-                  ? "d-inline-flex cell flag"
+                  ? 'd-inline-flex cell flag'
                   : col.val === 1
-                  ? "d-inline-flex cell "
+                  ? 'd-inline-flex cell '
                   : col.val === 2
-                  ? "d-inline-flex cell clean"
-                  : "d-inline-flex cell "
+                  ? 'd-inline-flex cell clean'
+                  : 'd-inline-flex cell '
               }
               onClick={() => handleRigthClick(col)}
               onContextMenu={(e) => handleLeftClick(e, col)}
             >
-              <p>{col.mines !== 0 ? col.mines : "⠀"}</p>
+              <p>{col.mines !== 0 ? col.mines : '⠀'}</p>
             </div>
           ))}
         </div>

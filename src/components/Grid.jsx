@@ -31,12 +31,23 @@ const Grid = () => {
     let y = cell.y;
     let mines = 0;
     //let copy = [...state];
-
-    /*  for (let i = -1; i < 2; i++)
+    //console.log(x, y);
+    for (let i = -1; i < 2; i++)
       for (let j = -1; j < 2; j++)
-        //if (x + i >= 0 && x + j >= 0) {
-        console.log(i, j); */
-    //}
+        if (i === 0 && j === 0) {
+          //no comprobar la casilla a la que se le da click
+        } else {
+          if (x + i === -1 || x + i === state.length) {
+            //console.log(x + i + 1, y + j + 1);
+          } else if (y + j === -1 || y + j === state.length) {
+            //console.log(x + i + 1, y + j + 1);
+          } else {
+            if (copy[x + i][y + j].val === 1) mines++;
+          }
+        }
+    /*  if (x +i && y+j >= 0) {
+          console.log(x, y);
+        } */
     /*  for (let i = -1; i < 2; i++)
       for (let j = -1; j < 2; j++) {
         console.log(copy[x + i][y + j]);
@@ -47,7 +58,7 @@ const Grid = () => {
       for (let i = -1; i < 2; i++)
         for (let j = -1; j < 2; j++) reveal(copy[x + i][y + j]); */
 
-    if (x === 0 && y === 0) {
+    /* if (x === 0 && y === 0) {
       for (let i = 0; i < 2; i++)
         for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
       if (mines === 0)
@@ -131,7 +142,7 @@ const Grid = () => {
       if (mines === 0)
         for (let i = -1; i < 2; i++)
           for (let j = -1; j < 1; j++) reveal(copy[x + i][y + j]);
-    }
+    } */
 
     copy[cell.x][cell.y] = {
       val: 2,
@@ -268,7 +279,7 @@ const Grid = () => {
                   : col.marca && col.val === 0
                   ? 'd-inline-flex cell flag'
                   : col.val === 1
-                  ? 'd-inline-flex cell '
+                  ? 'd-inline-flex cell active'
                   : col.val === 2
                   ? 'd-inline-flex cell clean'
                   : 'd-inline-flex cell '
@@ -276,7 +287,7 @@ const Grid = () => {
               onClick={() => handleRigthClick(col)}
               onContextMenu={(e) => handleLeftClick(e, col)}
             >
-              <p>{col.mines !== 0 ? col.mines : '⠀'}</p>
+              <p>{col.mines !== 0 ? col.mines : ' '}</p>
             </div>
           ))}
         </div>

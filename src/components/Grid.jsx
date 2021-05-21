@@ -32,15 +32,11 @@ const Grid = () => {
       for (let j = -1; j < 2; j++)
         if (i === 0 && j === 0) {
           //no comprobar la casilla a la que se le da click
-        } else {
-          if (x + i === -1 || x + i === size) {
-            //manejando los limites en x
-          } else if (y + j === -1 || y + j === size) {
-            //manejando los limites en y
-          } else {
-            if (copy[x + i][y + j].val === 1) mines++;
-          }
-        }
+        } else if (x + i === -1 || x + i === size) {
+          //manejando los limites en x
+        } else if (y + j === -1 || y + j === size) {
+          //manejando los limites en y
+        } else if (copy[x + i][y + j].val === 1) mines++;
 
     copy[cell.x][cell.y] = {
       val: 2,
@@ -51,23 +47,18 @@ const Grid = () => {
     };
 
     if (mines === 0) {
-      for (let i = -1; i < 2; i++) {
+      for (let i = -1; i < 2; i++)
         for (let j = -1; j < 2; j++)
           if (i === 0 && j === 0) {
             //no comprobar la casilla a la que se le da click
-          } else {
-            if (x + i === -1 || x + i === size) {
-              //manejando los limites en x
-            } else if (y + j === -1 || y + j === size) {
-              //manejando los limites en y
-            } else {
-              if (copy[x + i][y + j].val === 1) mines++;
-              else if (copy[x + i][y + j].val !== 2) {
-                surround(copy[x + i][y + j], copy);
-              }
-            }
+          } else if (x + i === -1 || x + i === size) {
+            //manejando los limites en x
+          } else if (y + j === -1 || y + j === size) {
+            //manejando los limites en y
+          } else if (copy[x + i][y + j].val === 1) mines++;
+          else if (copy[x + i][y + j].val !== 2) {
+            surround(copy[x + i][y + j], copy);
           }
-      }
     }
     return copy;
   };
@@ -82,7 +73,7 @@ const Grid = () => {
       alert('Ya ganaste we');
       setTimeout(() => {
         window.location.reload();
-      }, 2000);
+      }, 3000);
     }
   };
 

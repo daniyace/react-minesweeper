@@ -128,7 +128,7 @@ const Grid = () => {
               onClick={() => handleRigthClick(col)}
               onContextMenu={(e) => handleLeftClick(e, col)}
             >
-              <p>{col.mines !== 0 ? col.mines : ' '}</p>
+              <p>{col.mines !== 0 ? col.mines : '⠀'}</p>
             </div>
           ))}
         </div>

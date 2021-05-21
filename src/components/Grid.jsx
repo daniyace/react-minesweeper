@@ -15,12 +15,9 @@ const Grid = () => {
         marca: false,
         mines: 0,
       };
-      if (matrix[i][j].val === 1) {
-        matrix[i][j].val = Math.floor(Math.random() * 2);
-      }
-      if (matrix[i][j].val === 1) {
-        matrix[i][j].val = Math.floor(Math.random() * 2);
-      }
+      for (let h = 0; h < 2; h++)
+        if (matrix[i][j].val === 1)
+          matrix[i][j].val = Math.floor(Math.random() * 2);
     }
   }
 
@@ -30,108 +27,20 @@ const Grid = () => {
     let x = cell.x;
     let y = cell.y;
     let mines = 0;
-    //let copy = [...state];
 
-    /*  for (let i = -1; i < 2; i++)
+    for (let i = -1; i < 2; i++)
       for (let j = -1; j < 2; j++)
-        //if (x + i >= 0 && x + j >= 0) {
-        console.log(i, j); */
-    //}
-    /*  for (let i = -1; i < 2; i++)
-      for (let j = -1; j < 2; j++) {
-        console.log(copy[x + i][y + j]);
-        if (copy[x + i][y + j].val === 1) mines++;
-      }
-
-    if (mines === 0)
-      for (let i = -1; i < 2; i++)
-        for (let j = -1; j < 2; j++) reveal(copy[x + i][y + j]); */
-
-    if (x === 0 && y === 0) {
-      for (let i = 0; i < 2; i++)
-        for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-      if (mines === 0)
-        for (let i = 0; i < 2; i++)
-          for (let j = 0; j < 2; j++) reveal(copy[x + i][y + j]);
-    } else if (x === 0 && y === copy.length - 1) {
-      for (let i = 0; i < 2; i++)
-        for (let j = -1; j < 1; j++) if (copy[x + i][y + j].val === 1) mines++;
-      if (mines === 0)
-        for (let i = 0; i < 2; i++)
-          for (let j = -1; j < 1; j++) reveal(copy[x + i][y + j]);
-    } else if (x === copy.length - 1 && y === 0) {
-      for (let i = -1; i < 1; i++)
-        for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-      if (mines === 0)
-        for (let i = -1; i < 1; i++)
-          for (let j = 0; j < 2; j++) reveal(copy[x + i][y + j]);
-    } else if (x === copy.length - 1 && y === copy[0].length - 1) {
-      for (let i = -1; i < 1; i++)
-        for (let j = -1; j < 1; j++) if (copy[x + i][y + j].val === 1) mines++;
-      if (mines === 0)
-        for (let i = -1; i < 1; i++)
-          for (let j = -1; j < 1; j++) reveal(copy[x + i][y + j]);
-    } else if (
-      x !== 0 &&
-      x !== copy.length - 1 &&
-      y !== 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = -1; i < 2; i++)
-        for (let j = -1; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-
-      if (mines === 0) {
-        for (let i = -1; i < 2; i++)
-          for (let j = -1; j < 2; j++) reveal(copy[x + i][y + j]);
-      }
-    } else if (
-      x === 0 &&
-      x !== copy.length - 1 &&
-      y !== 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = 0; i < 2; i++)
-        for (let j = -1; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-      if (mines === 0)
-        for (let i = 0; i < 2; i++)
-          for (let j = -1; j < 2; j++) reveal(copy[x + i][y + j]);
-    } else if (
-      x !== 0 &&
-      x === copy.length - 1 &&
-      y !== 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = -1; i < 1; i++)
-        for (let j = -1; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-
-      if (mines === 0)
-        for (let i = -1; i < 1; i++)
-          for (let j = -1; j < 2; j++) reveal(copy[x + i][y + j]);
-    } else if (
-      x !== 0 &&
-      x !== copy.length - 1 &&
-      y === 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = -1; i < 2; i++)
-        for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-
-      if (mines === 0)
-        for (let i = -1; i < 2; i++)
-          for (let j = 0; j < 2; j++) reveal(copy[x + i][y + j]);
-    } else if (
-      x !== 0 &&
-      x !== copy.length - 1 &&
-      y !== 0 &&
-      y === copy[0].length - 1
-    ) {
-      for (let i = -1; i < 2; i++)
-        for (let j = -1; j < 1; j++) if (copy[x + i][y + j].val === 1) mines++;
-
-      if (mines === 0)
-        for (let i = -1; i < 2; i++)
-          for (let j = -1; j < 1; j++) reveal(copy[x + i][y + j]);
-    }
+        if (i === 0 && j === 0) {
+          //no comprobar la casilla a la que se le da click
+        } else {
+          if (x + i === -1 || x + i === size) {
+            //manejando los limites en x
+          } else if (y + j === -1 || y + j === size) {
+            //manejando los limites en y
+          } else {
+            if (copy[x + i][y + j].val === 1) mines++;
+          }
+        }
 
     copy[cell.x][cell.y] = {
       val: 2,
@@ -140,81 +49,27 @@ const Grid = () => {
       marca: cell.marca,
       mines: mines,
     };
-    setState(copy);
 
-    endGame();
-  };
-
-  const reveal = (cell) => {
-    let x = cell.x;
-    let y = cell.y;
-    let mines = 0;
-    let copy = [...state];
-
-    /*  for (let i = 0; i < 2; i++)
-      for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++; */
-    if (x === 0 && y === 0) {
-      for (let i = 0; i < 2; i++)
-        for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (x === 0 && y === copy.length - 1) {
-      for (let i = 0; i < 2; i++)
-        for (let j = -1; j < 1; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (x === copy[0].length - 1 && y === 0) {
-      for (let i = -1; i < 1; i++)
-        for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (x === copy.length - 1 && y === copy[0].length - 1) {
-      for (let i = -1; i < 1; i++)
-        for (let j = -1; j < 1; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (
-      x !== 0 &&
-      x !== copy.length - 1 &&
-      y !== 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = -1; i < 2; i++)
-        for (let j = -1; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (
-      x === 0 &&
-      x !== copy.length - 1 &&
-      y !== 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = 0; i < 2; i++)
-        for (let j = -1; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (
-      x !== 0 &&
-      x === copy.length - 1 &&
-      y !== 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = -1; i < 1; i++)
-        for (let j = -1; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (
-      x !== 0 &&
-      x !== copy.length - 1 &&
-      y === 0 &&
-      y !== copy[0].length - 1
-    ) {
-      for (let i = -1; i < 2; i++)
-        for (let j = 0; j < 2; j++) if (copy[x + i][y + j].val === 1) mines++;
-    } else if (
-      x !== 0 &&
-      x !== copy.length - 1 &&
-      y !== 0 &&
-      y === copy[0].length - 1
-    ) {
-      for (let i = -1; i < 2; i++)
-        for (let j = -1; j < 1; j++) if (copy[x + i][y + j].val === 1) mines++;
+    if (mines === 0) {
+      for (let i = -1; i < 2; i++) {
+        for (let j = -1; j < 2; j++)
+          if (i === 0 && j === 0) {
+            //no comprobar la casilla a la que se le da click
+          } else {
+            if (x + i === -1 || x + i === size) {
+              //manejando los limites en x
+            } else if (y + j === -1 || y + j === size) {
+              //manejando los limites en y
+            } else {
+              if (copy[x + i][y + j].val === 1) mines++;
+              else if (copy[x + i][y + j].val !== 2) {
+                surround(copy[x + i][y + j], copy);
+              }
+            }
+          }
+      }
     }
-
-    copy[cell.x][cell.y] = {
-      val: 2,
-      x: cell.x,
-      y: cell.y,
-      marca: cell.marca,
-      mines: mines,
-    };
-    setState(copy);
+    return copy;
   };
 
   const endGame = () => {
@@ -225,7 +80,9 @@ const Grid = () => {
     }
     if (ban) {
       alert('Ya ganaste we');
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
   };
 
@@ -235,7 +92,10 @@ const Grid = () => {
         alert('Ya perdiste chavo');
         window.location.reload();
       } else {
-        if (cell.val !== 2) surround(cell, [...state]);
+        if (cell.val !== 2) {
+          setState(surround(cell, [...state]));
+          endGame();
+        }
       }
     } else {
       console.log(cell.val);
@@ -268,7 +128,9 @@ const Grid = () => {
                   : col.marca && col.val === 0
                   ? 'd-inline-flex cell flag'
                   : col.val === 1
-                  ? 'd-inline-flex cell '
+                  ? !ban
+                    ? 'd-inline-flex cell active'
+                    : 'd-inline-flex cell '
                   : col.val === 2
                   ? 'd-inline-flex cell clean'
                   : 'd-inline-flex cell '

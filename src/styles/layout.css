@@ -1,5 +1,11 @@
+.body {
+  margin: 0;
+  padding: 0;
+}
 .main {
-  margin-top: 5px;
+  margin: 10px;
   position: relative;
-  width: 100%;
+  min-width: 700px;
+  min-height: 700px;
+  overflow: auto;
 }

@@ -9,6 +9,7 @@
     }
   ],
   "start_url": "/react-minesweeper",
+  "scope": "/react-minesweeper",
   "display": "standalone",
   "theme_color": "#A9C7BF",
   "background_color": "#ffffff"

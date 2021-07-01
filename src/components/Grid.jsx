@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/grid.css';
+import '../styles/selection.css';
 
 const Grid = () => {
-  let size = 15;
+  const size = 15;
   let ban = true;
-  let matrix = [];
-  for (var i = 0; i < size; i++) {
-    matrix[i] = [];
-    for (var j = 0; j < size; j++) {
-      matrix[i][j] = {
-        val: Math.floor(Math.random() * 2),
-        x: i,
-        y: j,
-        marca: false,
-        mines: 0,
-      };
-      for (let h = 0; h < 2; h++)
-        if (matrix[i][j].val === 1)
-          matrix[i][j].val = Math.floor(Math.random() * 2);
+  const start = () => {
+    let matrix = [];
+    for (let i = 0; i < size; i++) {
+      matrix[i] = [];
+      for (let j = 0; j < size; j++) {
+        matrix[i][j] = {
+          val: Math.floor(Math.random() * 2),
+          x: i,
+          y: j,
+          marca: false,
+          mines: 0,
+        };
+      }
     }
-  }
 
-  const [state, setState] = useState(matrix);
+    setState(matrix);
+  };
+
+  const [diff, setDiff] = useState(false);
+  const [state, setState] = useState(false);
+  const [select, setSelect] = useState(false);
+  const [first, setFirst] = useState(true);
+  const [lost, setLost] = useState(false);
+  const [win, setWin] = useState(false);
+
+  useEffect(() => {
+    if (first && select) {
+      setFirst(false);
+      start();
+    }
+    if (diff > 0 && state) {
+      setDiff(diff - 1);
+
+      let matrix = state;
+      for (let i = 0; i < state.length; i++)
+        for (let j = 0; j < state.length; j++)
+          if (matrix[i][j].val === 1)
+            matrix[i][j].val = Math.floor(Math.random() * 2);
+
+      if (matrix) setState(state);
+    }
+  }, [select, diff, first, state]);
 
   const surround = (cell, copy) => {
     let x = cell.x;
@@ -69,24 +94,23 @@ const Grid = () => {
       }
     }
     if (ban) {
-      alert('Ya ganaste we');
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      alert('You win');
+      setWin(true);
     }
   };
 
   const handleRigthClick = (cell) => {
     if (!cell.marca) {
-      if (cell.val === 1) {
-        alert('Ya perdiste chavo');
-        window.location.reload();
-      } else {
-        if (cell.val !== 2) {
-          setState(surround(cell, [...state]));
-          endGame();
+      if (!lost && !win)
+        if (cell.val === 1) {
+          alert('You lost');
+          setLost(true);
+        } else {
+          if (cell.val !== 2) {
+            setState(surround(cell, [...state]));
+            endGame();
+          }
         }
-      }
     } else {
       console.log(cell.val);
     }
@@ -104,37 +128,90 @@ const Grid = () => {
     };
     setState(copy);
   };
-
-  return (
-    <div className='grid'>
-      {state.map((row, i) => (
-        <div key={i}>
-          {row.map((col, j) => (
-            <div
-              key={j}
-              className={
-                col.marca && col.val === 1
-                  ? 'd-inline-flex cell flag'
-                  : col.marca && col.val === 0
-                  ? 'd-inline-flex cell flag'
-                  : col.val === 1
-                  ? !ban
-                    ? 'd-inline-flex cell active'
+  const reset = () => {
+    setDiff(false);
+    setState(false);
+    setSelect(false);
+    setFirst(true);
+    setLost(false);
+    setWin(false);
+    ban = false;
+  };
+  if (select && state) {
+    return (
+      <div className='grid'>
+        {state.map((row, i) => (
+          <div key={i}>
+            {row.map((col, j) => (
+              <div
+                key={j}
+                className={
+                  col.marca && col.val === 1
+                    ? 'd-inline-flex cell flag'
+                    : col.marca && col.val === 0
+                    ? 'd-inline-flex cell flag'
+                    : col.val === 1
+                    ? !ban || lost
+                      ? 'd-inline-flex cell active'
+                      : 'd-inline-flex cell'
+                    : col.val === 2
+                    ? 'd-inline-flex cell clean'
                     : 'd-inline-flex cell '
-                  : col.val === 2
-                  ? 'd-inline-flex cell clean'
-                  : 'd-inline-flex cell '
-              }
-              onClick={() => handleRigthClick(col)}
-              onContextMenu={(e) => handleLeftClick(e, col)}
+                }
+                onClick={() => handleRigthClick(col)}
+                onContextMenu={(e) => handleLeftClick(e, col)}
+              >
+                <p>{col.mines !== 0 ? col.mines : '⠀'}</p>
+              </div>
+            ))}
+          </div>
+        ))}
+        {lost ? (
+          <button className='btn btn-danger res' onClick={() => reset()}>
+            Reset
+          </button>
+        ) : (
+          ''
+        )}
+        {win ? (
+          <button className='btn btn-success win' onClick={() => reset()}>
+            Reset
+          </button>
+        ) : (
+          ''
+        )}
+      </div>
+    );
+  } else {
+    return (
+      <div className='selection container'>
+        <header>
+          <h1 className='text-center'>Minesweeper on React</h1>
+        </header>
+        <section>
+          <h3 className='text-center par'>Choose the difficulty</h3>
+          <div className='center'>
+            <select name='diff' id='diff' className='select' defaultValue={2}>
+              <option value={3}>Easy</option>
+              <option value={2}>Normal</option>
+              <option value={1}>Hard</option>
+              <option value={0}>You cant win</option>
+            </select>
+            <button
+              className='btn btn-primary '
+              onClick={() => {
+                let e = document.getElementById('diff');
+                setDiff(e.value);
+                setSelect(true);
+              }}
             >
-              <p>{col.mines !== 0 ? col.mines : '⠀'}</p>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
+              Start
+            </button>
+          </div>
+        </section>
+      </div>
+    );
+  }
 };
 
 export default Grid;

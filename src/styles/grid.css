@@ -7,13 +7,31 @@
 .grid div {
   height: 45px;
 }
+.res {
+  position: absolute;
+  top: 40%;
+  left: 35%;
+  background: #dc3546b9 !important;
+  border: none !important;
+  transition: all 1s ease-out;
+}
+.win {
+  position: absolute;
+  top: 40%;
+  left: 35%;
+  background: #3bdc35b9 !important;
+  border: none !important;
+  transition: all 1s ease-out;
+}
 .cell {
-  background: rgb(169, 199, 191);
+  background: #428e92ad;
   width: 45px;
   height: 45px;
   align-items: center;
   border: 1px solid #000;
   border-radius: 5px;
+  transform: scale(0.85);
+  transition: all 0.08s ease-out;
 }
 .cell p {
   margin: auto;
@@ -22,12 +40,16 @@
   cursor: default;
 }
 .active {
-  background: rgb(47, 211, 82);
+  background: #7f0000;
 }
 
 .flag {
-  background: rgb(211, 58, 47);
+  background: #b71c1cd2;
+  transform: scale(0.93);
 }
 .clean {
   background: #fff;
+  transform: scale(0.95);
+  border: 1px solid rgb(192, 192, 192);
+  border-radius: 3.5px;
 }
